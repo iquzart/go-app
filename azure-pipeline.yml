@@ -62,7 +62,7 @@ stages:
         containerRegistry: '$(containerRegistryServiceConnection)'
         repository: '$(imageRepository)'
         command: 'build'
-        Dockerfile: '**/Conainerfile'
+        Dockerfile: '**/Containerfile'
         tags: '$(tag)'
         
     - task: Docker@2
