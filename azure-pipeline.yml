@@ -36,7 +36,7 @@ variables:
   value: 'Docker Hub'
 
 - name: imageRepository
-  value: 'go-app'
+  value: 'diquzart/go-app'
 
 stages:
 - stage: Build
