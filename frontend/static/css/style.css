@@ -10,17 +10,6 @@ body {
   height: 100%;
 }
 
-body {
-  /* display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
-  font-family: "Nunito Sans";
-  color: var(--blue);
-  font-size: 1em; */
-}
 
 button {
   font-family: "Nunito Sans";
@@ -92,7 +81,6 @@ h2 {
   font-weight: bold;
 }
 
-
 /* Style for home page */
 #home-page-container {
   height: 75vh;
@@ -112,10 +100,4 @@ h2 {
 }
 #home-page-container .host-info .label-value{
   color:#00acd7;
-}
-
-/* About page styles */
-#about-page-container {
-  /* height: 100%;
-  padding-top: 100px; */
 }
