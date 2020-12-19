@@ -95,7 +95,7 @@ h2 {
 
 /* Style for home page */
 #home-page-container {
-  height: 80vh;
+  height: 75vh;
   display: flex;
   justify-content: center;
   align-items: center;
