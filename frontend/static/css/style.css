@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+:root {
+  --blue: #0e0620;
+  --white: #fff;
+  --green: #2ccf6d;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+
+button {
+  font-family: "Nunito Sans";
+}
+
+.jumbotron {
+  border-radius: 1.5rem;
+}
+
+h2 {
+  font-weight: bold;
+}
+.btn {
+  z-index: 1;
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+  padding: 8px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1em;
+  letter-spacing: 2px;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+  font-weight: bold;
+  margin: 5px 0px;
+}
+.btn.green {
+  border: 4px solid var(--green);
+  color: var(--blue);
+}
+.btn.green:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--green);
+  z-index: -1;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+.btn.green:hover {
+  color: var(--white);
+  background: var(--green);
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+.btn.green:hover:before {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    display: block;
+  }
+
+  .container {
+    margin-top: 70px;
+    margin-bottom: 70px;
+  }
+}
+
+/* style for 404 pages */
+#page-404 h1 {
+  font-size: 7.5em;
+  margin: 15px 0px;
+  font-weight: bold;
+}
+
+/* Style for home page */
+#home-page-container {
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#home-page-container h1{
+  font-size: 4em;
+  color:#00acd7;
+}
+#home-page-container .host-info{
+  font-size: 18px;
+}
+#home-page-container .host-info .label{
+  color: #282828;
+}
+#home-page-container .host-info .label-value{
+  color:#00acd7;
+}

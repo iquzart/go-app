@@ -1,15 +1,17 @@
 {{define "content"}}
-<div class="container">
-    <div class="row my-4">
-        <div class="col-12 col-sm-5 mb-4 m-auto text-center">
-            <div class="card">
-                <div class="card-header">
-                  Go App
-                </div>
-                <div class="card-body">
-                  <p class="card-text"><span class="badge badge-secondary">Hello,</span><span class="badge badge-primary">{{ .name }}</span></p>
-                </div>
-              </div>
+<div id="home-page-container">
+  <div class="container jumbotron text-center">
+    <div class="row">
+      <div class="col-12 col-lg-3 text-center">
+        <img class="img-fluid" src="/static/images/home.svg" alt="home" />
+      </div>
+      <div class="col-12 col-lg-9 pt-5">
+        <h1>
+          Hello, {{ .name }}
+        </h1>
+      </div>
     </div>
+  </div>
 </div>
+
 {{end}}
