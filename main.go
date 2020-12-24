@@ -1,13 +1,20 @@
 package main
 
 import (
-	"github.com/iquzart/go-app/router"
+	"os"
+
+	"github.com/iquzart/go-app/routers"
 )
 
 func main() {
 
-	routersInit := router.InitRouter()
+	port := ":" + os.Getenv("PORT")
 
-	routersInit.Run(":8080")
+	routersInit := routers.InitRouter()
 
+	if port == ":" {
+		routersInit.Run()
+	} else {
+		routersInit.Run(port)
+	}
 }

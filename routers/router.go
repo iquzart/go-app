@@ -1,12 +1,12 @@
-package router
+package routers
 
 import (
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
-	"github.com/iquzart/go-app/controller"
+	"github.com/iquzart/go-app/controllers"
 )
 
-func createMyRender() multitemplate.Renderer {
+func CreateTmplRender() multitemplate.Renderer {
 
 	baseTmpl := "frontend/templates/base.tmpl.html"
 	homeTmpl := "frontend/templates/home.tmpl.html"
@@ -34,15 +34,15 @@ func InitRouter() *gin.Engine {
 
 	// Frontend
 	r.Static("/static", "./frontend/static")
-	r.HTMLRender = createMyRender()
+	r.HTMLRender = CreateTmplRender()
 
 	// Routes
-	r.GET("/", controller.Home)
-	r.GET("/about", controller.About)
-	r.GET("/api", controller.Api)
-	r.GET("/user/:name", controller.ApiParam)
-	r.GET("/health", controller.Health)
-	r.NoRoute(controller.NoFound)
+	r.GET("/", controllers.Home)
+	r.GET("/about", controllers.About)
+	r.GET("/api", controllers.Api)
+	r.GET("/user/:name", controllers.ApiParam)
+	r.GET("/health", controllers.Health)
+	r.NoRoute(controllers.NoFound)
 
 	return r
 }
