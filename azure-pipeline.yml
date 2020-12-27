@@ -39,8 +39,28 @@ variables:
   value: 'diquzart/go-app'
 
 stages:
+- stage: Test
+  displayName: Test and Coverage
+  jobs:
+  - job: Test
+    displayName: Test
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: GoTool@0
+      displayName: Get GoLang
+      inputs:
+        version: '1.14.1'
+
+    - task: Go@0
+      displayName: GO Test
+      inputs:
+        command: 'test'
+        arguments: '-v ./controllers'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+
 - stage: Build
-  displayName: Build image
+  displayName: Build Image
 
   jobs:  
   - job: Build
