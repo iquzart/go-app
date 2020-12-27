@@ -38,6 +38,16 @@ variables:
 - name: imageRepository
   value: 'diquzart/go-app'
 
+- name: GOBIN
+  value:  '$(GOPATH)/bin' # Go binaries path
+- name: GOROOT
+  value: '/usr/local/go1.11' # Go installation path
+- name: GOPATH  
+  value: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
+- name: modulePath   
+  value: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
+
+
 stages:
 - stage: Test
   displayName: Test and Coverage
@@ -47,10 +57,16 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: GoTool@0
-      displayName: Get GoLang
-      inputs:
-        version: '1.14.1'
+
+    - script: |
+        mkdir -p '$(GOBIN)'
+        mkdir -p '$(GOPATH)/pkg'
+        mkdir -p '$(modulePath)'
+        shopt -s extglob
+        mv !(gopath) '$(modulePath)'
+        echo '##vso[task.prependpath]$(GOBIN)'
+        echo '##vso[task.prependpath]$(GOROOT)/bin'
+      displayName: 'Set up the Go workspace'
 
 #    - task: Go@0
 #      displayName: GO Test
