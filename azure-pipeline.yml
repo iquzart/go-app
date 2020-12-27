@@ -87,7 +87,7 @@ stages:
         gocov-xml < coverage.json > coverage.xml
         mkdir coverage
         gocov-html < coverage.json > coverage/index.html
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      workingDirectory: '$(modulePath)'
       displayName: 'Run unit test'
 
     - task: PublishTestResults@2
