@@ -16,7 +16,7 @@ trigger:
   paths:
     #include:
     exclude:
-    - azure-pipelines.yml
+    - azure-pipeline.yml
     - README.md
 
 # Don't run against PRs
@@ -71,7 +71,7 @@ stages:
         gocov-xml < coverage.json > coverage.xml
         mkdir coverage
         gocov-html < coverage.json > coverage/index.html
-      workingDirectory: '$(modulePath)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
       displayName: 'Run unit test'
 
     - task: PublishTestResults@2
