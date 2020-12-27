@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/iquzart/go-app/controllers"
+	ginprometheus "github.com/mcuadros/go-gin-prometheus"
 )
 
 func CreateTmplRender() multitemplate.Renderer {
@@ -31,6 +32,9 @@ func InitRouter() *gin.Engine {
 	// Global middleware
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	p := ginprometheus.NewPrometheus("gin")
+
+	p.Use(r)
 
 	// Frontend
 	r.Static("/static", "./public/static")

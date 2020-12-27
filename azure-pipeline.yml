@@ -60,7 +60,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - stage: Build
-  displayName: Build Container Image
+  displayName: Build Image
 
   jobs:  
   - job: Build
