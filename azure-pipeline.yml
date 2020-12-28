@@ -58,22 +58,11 @@ stages:
       vmImage: $(vmImageName)
     steps:
 
-    - script: |
-        mkdir -p '$(GOBIN)'
-        mkdir -p '$(GOPATH)/pkg'
-        mkdir -p '$(modulePath)'
-        shopt -s extglob
-        mv !(gopath) '$(modulePath)'
-        echo '##vso[task.prependpath]$(GOBIN)'
-        echo '##vso[task.prependpath]$(GOROOT)/bin'
-      displayName: 'Set up the Go workspace'
-
-#    - task: Go@0
-#      displayName: GO Test
-#     inputs:
-#        command: 'test'
-#        arguments: '-v ./controllers'
-#        workingDirectory: '$(System.DefaultWorkingDirectory)'
+    steps:
+    - task: GoTool@0
+      displayName: Get GoLang
+      inputs:
+        version: '1.14.1'
 
     - script: |
         echo "print go version"
@@ -82,13 +71,20 @@ stages:
         go get github.com/axw/gocov/gocov
         go get github.com/AlekSi/gocov-xml
         go get -u gopkg.in/matm/v1/gocov-html
-        go test -v -coverprofile=coverage.txt ./controllers 2>&1 | go-junit-report > report.xml
-        gocov convert coverage.txt > coverage.json
-        gocov-xml < coverage.json > coverage.xml
-        mkdir coverage
-        gocov-html < coverage.json > coverage/index.html
-      workingDirectory: '$(modulePath)'
-      displayName: 'Run unit test'
+        #go test -v -coverprofile=coverage.txt ./controllers 2>&1 | go-junit-report > report.xml
+        #gocov convert coverage.txt > coverage.json
+        #gocov-xml < coverage.json > coverage.xml
+        #mkdir coverage
+        #gocov-html < coverage.json > coverage/index.html
+      displayName: 'Set Env'
+
+    - task: Go@0
+      displayName: GO Test
+      inputs:
+        command: 'test'
+        arguments: '-v -coverprofile=coverage.txt ./controllers 2>&1 | go-junit-report > report.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+
 
     - task: PublishTestResults@2
       inputs:
