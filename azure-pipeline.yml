@@ -56,8 +56,7 @@ stages:
     displayName: Test
     pool:
       vmImage: $(vmImageName)
-    steps:
-
+      
     steps:
     - task: GoTool@0
       displayName: Get GoLang
