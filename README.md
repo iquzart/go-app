@@ -11,5 +11,29 @@ Features
 1. Health check for Kubernetes
 2. Prometheus Metrics
 
+Environment Veriables
+---------------------
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| PORT | Application port | 8080 |
+| GIN_MODE | Gin Modes - debug, release, test | release |
+| BANNER | Banner to be displayed on App Home page | "Hello from Go App" |
 
 
+App Screenshot
+--------------
+
+![Image of GA-Home](https://github.com/iquzart/go-app/doc/ga-Home.png)
+
+
+License
+-------
+
+MIT
+
+
+Author Information
+------------------
+
+Muhammed Iqbal <iquzart@hotmail.com>
