@@ -1,0 +1,64 @@
+#
+# Azure DevOps pipeline
+#
+# Application     : Go App
+# Created by      : Muhammed Iqbal
+#
+#
+
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+      - development
+  paths:
+    exclude:
+      - README.md
+      - LICENSE
+      - .gitignore
+
+# Don't run against PRs
+pr: none
+
+variables:
+#- group: <Variable Group Name>
+
+- name: tag
+  value:  $(Build.SourceBranchName)-$(GitShortSha)
+
+# Agent VM image name
+- name: vmImageName
+  value: 'ubuntu-latest'
+
+- name: containerRegistryServiceConnection
+  value: 'Docker Hub'
+
+- name: imageRepository
+  value: 'diquzart/go-app'
+
+- name: APPNAME
+  value: go-app
+
+- name: GOPATH
+  value: '$(Pipeline.Workspace)/go'
+
+
+stages:
+
+  - stage: Test
+    jobs:
+      - template: templates/test.yml
+        parameters:
+          vmImage: $(vmImageName)
+
+  - stage: Build
+    displayName: Build
+    jobs:
+      - template: templates/build.yml
+        parameters:
+          vmImage: $(vmImageName)
+          tag: $(tag)
+          containerRegistryServiceConnection: $(containerRegistryServiceConnection)
+          imageRepository: $(imageRepository)
