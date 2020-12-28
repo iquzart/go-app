@@ -52,12 +52,12 @@ stages:
         parameters:
           vmImage: $(vmImageName)
 
-  - stage: Build
-    displayName: Build
-    jobs:
-      - template: templates/build.yml
-        parameters:
-          vmImage: $(vmImageName)
-          tag: $(tag)
-          containerRegistryServiceConnection: $(containerRegistryServiceConnection)
-          imageRepository: $(imageRepository)
+#  - stage: Build
+#    displayName: Build
+#    jobs:
+#      - template: templates/build.yml
+#        parameters:
+##          vmImage: $(vmImageName)
+#          tag: $(tag)
+#          containerRegistryServiceConnection: $(containerRegistryServiceConnection)
+#          imageRepository: $(imageRepository)
