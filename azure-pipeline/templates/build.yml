@@ -20,7 +20,7 @@ jobs:
       - task: Docker@2
         displayName: Build Container Image
         inputs:
-          containerRegistry: '$(parameters.containerRegistryServiceConnection)'
+          containerRegistry: '${{parameters.containerRegistryServiceConnection}}'
           repository: '${{parameters.imageRepository}}'
           command: 'build'
           Dockerfile: '**/Containerfile'
