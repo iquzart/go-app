@@ -24,7 +24,7 @@ Environment Veriables
 App Screenshot
 --------------
 
-![Image of GA-Home](https://github.com/iquzart/go-app/doc/ga-Home.png)
+![Image of GA-Home](https://github.com/iquzart/go-app/blob/master/doc/ga-Home.png)
 
 
 License
