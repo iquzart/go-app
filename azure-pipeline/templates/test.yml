@@ -29,10 +29,10 @@ jobs:
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin latest
         displayName: 'Install Dependencies'
 
-      - script: |
-          set -e -x
-          golangci-lint run
-        displayName: 'Run Code Quality Checks'
+#      - script: |
+#          set -e -x
+#          golangci-lint run
+#        displayName: 'Run Code Quality Checks'
 
       - script: |
           set -e -x
