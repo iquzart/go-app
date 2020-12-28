@@ -16,7 +16,7 @@ jobs:
       vmImage: '$(parameters.vmImage)'
 
     steps:
-      - template: templates/setup_go.yml
+      - template: ./setup_go.yml
         parameters:
           goVersion: '$(go.version)'
 
