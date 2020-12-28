@@ -7,7 +7,7 @@ parameters:
 jobs:
   - job:
     pool:
-      vmImage: $(prarameters.vmImage)
+      vmImage: '${{prarameters.vmImage}}'
     steps:
 
       - checkout: self
@@ -21,15 +21,15 @@ jobs:
         displayName: Build Container Image
         inputs:
           containerRegistry: '$(parameters.containerRegistryServiceConnection)'
-          repository: '$(parameters.imageRepository)'
+          repository: '${{parameters.imageRepository}}'
           command: 'build'
           Dockerfile: '**/Containerfile'
-          tags: '$(parameters.tag)'
+          tags: '${{parameters.tag}}'
         
       - task: Docker@2
         displayName: Push Image to Container Registry
         inputs:
-          containerRegistry: '$(parameters.containerRegistryServiceConnection)'
-          repository: '$(parameters.imageRepository)'
+          containerRegistry: '${{parameters.containerRegistryServiceConnection}}'
+          repository: '${{parameters.imageRepository}}'
           command: 'push'
-          tags: '$(parameters.tag)'
+          tags: '${{parameters.tag}}'
