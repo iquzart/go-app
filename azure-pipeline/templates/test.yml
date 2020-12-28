@@ -13,7 +13,7 @@ jobs:
           go.version: '1.15'
 
     pool:
-      vmImage: '$(parameters.vmImage)'
+      vmImage: '${{parameters.vmImage}}'
 
     steps:
       - template: ./setup_go.yml
