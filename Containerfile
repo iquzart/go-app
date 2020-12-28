@@ -1,15 +1,8 @@
 # Start from the latest golang base image
-FROM golang:alpine
-
-# Add Maintainer Info
-LABEL maintainer="Muhammed Iqbal <iquzart@hotmail.com>"
-
-ENV GIN_MODE=release
-
-ENV BANNER="Hello from Go App"
+FROM golang:1.15-alpine as  build-env
 
 # Set the Current Working Directory inside the container
-WORKDIR /app
+WORKDIR /src
 
 # Copy go mod and sum files
 COPY go.mod go.sum ./
@@ -23,8 +16,41 @@ COPY . .
 # Build the Go app
 RUN go build -o app .
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
+# Final stage
+FROM alpine:latest
 
-# Command to run the executable
-CMD ["./app"]
+# Updated the Image
+RUN apk update && rm -rf /var/cache/apk/*
+
+# Maintainer Info
+LABEL maintainer="Muhammed Iqbal <iquzart@hotmail.com>"
+
+# Set GIN Mode as Release
+ENV GIN_MODE=release
+
+# Set environment variable default value
+ENV BANNER="Hello from Go App"
+
+# Container PORT
+ENV PORT="8081"
+
+# Create non-root account to run the container
+RUN adduser go -h /app -u 1000 -D
+
+# Switch to non-root user
+USER go
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy app
+COPY --from=build-env /src/app .
+
+# Copy public HTML files
+COPY public public
+
+# Expose port 8080 to the outside world
+EXPOSE ${PORT}
+
+#ENTRYPOINT ["./app"]
+CMD ./app

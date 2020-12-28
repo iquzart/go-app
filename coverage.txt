@@ -1,7 +1,0 @@
-mode: count
-github.com/iquzart/go-app/controllers/api.go:9.28,15.2 1 2
-github.com/iquzart/go-app/controllers/app.go:11.29,26.2 4 0
-github.com/iquzart/go-app/controllers/app.go:28.30,37.2 1 1
-github.com/iquzart/go-app/controllers/app.go:39.31,43.2 1 1
-github.com/iquzart/go-app/controllers/app.go:45.33,56.2 2 1
-github.com/iquzart/go-app/controllers/app.go:58.32,66.2 1 1
