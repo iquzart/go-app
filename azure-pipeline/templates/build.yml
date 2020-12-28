@@ -7,7 +7,7 @@ parameters:
 jobs:
   - job:
     pool:
-      vmImage: '${{prarameters.vmImage}}'
+      vmImage: '${{parameters.vmImage}}'
     steps:
 
       - checkout: self
