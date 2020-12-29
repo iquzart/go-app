@@ -1,7 +1,7 @@
 # Go Web application
 
 [![Build Status](https://dev.azure.com/iquzart/iquzart/_apis/build/status/Go%20App?branchName=master)](https://dev.azure.com/iquzart/iquzart/_build/latest?definitionId=7&branchName=master) [![Go Report Card](https://goreportcard.com/badge/github.com/iquzart/go-app)](https://goreportcard.com/report/github.com/iquzart/go-app)
-![Docker Pulls](https://img.shields.io/docker/pulls/diquzart/go-app) ![GitHub](https://img.shields.io/github/license/iquzart/go-app) 
+![Docker Pulls](https://img.shields.io/docker/pulls/diquzart/go-app) ![GitHub](https://img.shields.io/github/license/iquzart/go-app) ![Metrics Support](https://img.shields.io/badge/Metrics%20Support-Prometheus-blue)
 
 The application is created to test container infrastructure. 
 
