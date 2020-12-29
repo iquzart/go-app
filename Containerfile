@@ -32,7 +32,7 @@ ENV GIN_MODE=release
 ENV BANNER="Hello from Go App"
 
 # Container PORT
-ENV PORT="8081"
+ENV PORT="8080"
 
 # Create non-root account to run the container
 RUN adduser go -h /app -u 1000 -D
