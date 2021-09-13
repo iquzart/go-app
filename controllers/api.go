@@ -13,12 +13,3 @@ func Api(ctx *gin.Context) {
 			"message": "OK",
 		})
 }
-
-
-func InternalServerError(ctx *gin.Context) {
-	ctx.JSON(
-		http.StatusInternalServerError,
-		gin.H{
-			"message": "Application error",
-		})
-}

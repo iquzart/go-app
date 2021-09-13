@@ -46,7 +46,17 @@ func InitRouter() *gin.Engine {
 	r.GET("/api", controllers.Api)
 	r.GET("/user/:name", controllers.UrlParam)
 	r.GET("/health", controllers.Health)
+
+	r.GET("/403", controllers.Forbidden)	
+	r.GET("/404", controllers.NotFound)	
+	r.GET("/405", controllers.MethodNotAllowed)		
 	r.GET("/500", controllers.InternalServerError)
+	r.GET("/501", controllers.NotImplemented)
+	r.GET("/502", controllers.BadGateway)
+	r.GET("/503", controllers.ServiceUnavailable)
+	r.GET("/504", controllers.GatewayTimeout)
+	r.GET("/505", controllers.HTTPVersionNotSupported)
+
 	r.NoRoute(controllers.NoFound)
 
 	return r
