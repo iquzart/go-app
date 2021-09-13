@@ -46,6 +46,7 @@ func InitRouter() *gin.Engine {
 	r.GET("/api", controllers.Api)
 	r.GET("/user/:name", controllers.UrlParam)
 	r.GET("/health", controllers.Health)
+	r.GET("/500", controllers.InternalServerError)
 	r.NoRoute(controllers.NoFound)
 
 	return r
