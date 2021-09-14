@@ -7,18 +7,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestForbidden(t *testing.T) {
+func TestInternalServerError(t *testing.T) {
 
 	router := getRouter()
-	router.GET("/403", Forbidden)
+	router.GET("/500", InternalServerError)
 
-	w := performRequest(router, "GET", "/403")
+	w := performRequest(router, "GET", "/500")
 
 	// Check the response status code is what we expect.
-	assert.Equal(t, http.StatusForbidden, w.Code)
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 
 	// Check the response body is what we expect.
-	expected := "Forbidden"
+	expected := "Application error"
 	assert.Equal(t, expected, w.Body.String())
 
 }
