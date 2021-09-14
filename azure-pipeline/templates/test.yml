@@ -34,7 +34,7 @@ jobs:
 
       - script: |
           set -e -x
-          go test -v -coverprofile=coverage.txt -covermode count ./... > test_results.txt
+          go test -v -mod=readonly -coverprofile=coverage.txt -covermode count ./... > test_results.txt
           go-junit-report < test_results.txt > report.xml
         displayName: 'Run Unit Tests'
 
