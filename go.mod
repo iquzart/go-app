@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/gin-contrib/multitemplate v0.0.0-20200916052041-666a7309d230
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mcuadros/go-gin-prometheus v0.1.0
