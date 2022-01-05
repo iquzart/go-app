@@ -1,11 +1,11 @@
 package routers
 
 import (
-	"github.com/gin-gonic/gin"
 	helpers "go-app/helpers"
-	//ginprometheus "github.com/mcuadros/go-gin-prometheus"
-)
 
+	"github.com/gin-gonic/gin"
+	ginprometheus "github.com/mcuadros/go-gin-prometheus"
+)
 
 // InitRouter initialize routing information
 func InitRouter() *gin.Engine {
@@ -14,12 +14,12 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 
 	// Add Middlewares
-    r.Use(gin.Logger())
+	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	//p := ginprometheus.NewPrometheus("gin")
+	p := ginprometheus.NewPrometheus("gin")
 
-	//p.Use(r)
+	p.Use(r)
 
 	// Frontend
 	r.Static("/static", "./public/static")

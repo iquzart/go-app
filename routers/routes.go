@@ -1,8 +1,9 @@
 package routers
 
 import (
-	"github.com/gin-gonic/gin"
 	controllers "go-app/controllers"
+
+	"github.com/gin-gonic/gin"
 )
 
 func initializeRoutes(r *gin.Engine) {
@@ -16,9 +17,9 @@ func initializeRoutes(r *gin.Engine) {
 	// Route Group - Status
 	status := r.Group("/status")
 	{
-		status.GET("/403", controllers.Forbidden)	
-		status.GET("/404", controllers.NotFound)	
-		status.GET("/405", controllers.MethodNotAllowed)		
+		status.GET("/403", controllers.Forbidden)
+		status.GET("/404", controllers.NotFound)
+		status.GET("/405", controllers.MethodNotAllowed)
 		status.GET("/500", controllers.InternalServerError)
 		status.GET("/501", controllers.NotImplemented)
 		status.GET("/502", controllers.BadGateway)
@@ -28,7 +29,7 @@ func initializeRoutes(r *gin.Engine) {
 	}
 
 	// Route Group - API
-	v1 := r.Group("/v1")
+	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/check", controllers.Api)
 	}
