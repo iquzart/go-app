@@ -1,5 +1,5 @@
 parameters:
-  goVersion: '1.14'
+  goVersion: ''
 
 steps:
   - task: GoTool@0
