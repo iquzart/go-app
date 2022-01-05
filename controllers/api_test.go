@@ -10,9 +10,9 @@ import (
 func TestApi(t *testing.T) {
 
 	router := getRouter()
-	router.GET("/api", Api)
+	router.GET("/api/v1/check", Api)
 
-	w := performRequest(router, "GET", "/api")
+	w := performRequest(router, "GET", "/api/v1/check")
 
 	// Check the response status code is what we expect.
 	assert.Equal(t, http.StatusOK, w.Code)
