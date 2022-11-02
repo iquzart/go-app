@@ -46,11 +46,11 @@ variables:
 
 stages:
 
-  - stage: Test
-    jobs:
-      - template: templates/test.yml
-        parameters:
-          vmImage: $(vmImageName)
+  # - stage: Test
+  #   jobs:
+  #     - template: templates/test.yml
+  #       parameters:
+  #         vmImage: $(vmImageName)
 
   - stage: Build
     displayName: Build
