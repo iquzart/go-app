@@ -1,16 +1,17 @@
-package routers
+package server
 
 import (
 	helpers "go-app/helpers"
+	routes "go-app/routes"
 
 	"github.com/gin-gonic/gin"
 	ginprometheus "github.com/mcuadros/go-gin-prometheus"
 )
 
-// InitRouter initialize routing information
-func InitRouter() *gin.Engine {
+// InitServer initialize routing information
+func InitServer() *gin.Engine {
 
-	// Creates a router without any middleware
+	// Creates a server without any middleware
 	r := gin.New()
 
 	// Add Middlewares
@@ -26,7 +27,7 @@ func InitRouter() *gin.Engine {
 	r.HTMLRender = helpers.CreateTmplRender()
 
 	// Initialize Routes
-	initializeRoutes(r)
+	routes.InitializeRoutes(r)
 
 	return r
 }

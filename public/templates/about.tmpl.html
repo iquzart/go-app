@@ -1,41 +1,55 @@
 {{define "content"}}
 <div id="home-page-container">
 	<div class="container jumbotron text-center">
-	  <div class="row">
-		<div class="col-12 col-lg-3 text-center">
-		  <img class="img-fluid m-auto" src="/static/images/about.svg" alt="about" />
+		<div class="row">
+			<div class="col-12 col-lg-3 text-center">
+				<img class="img-fluid m-auto" src="/static/images/about.svg" alt="about" />
+			</div>
+			<div class="col-12 col-lg-9 pt-5">
+				<h1>
+					Go App
+				</h1>
+				<div class="host-info mt-4">
+					<p class="mb-0">
+					<p>
+						This app is for testing container platform.
+					</p>
+				</div>
+				<h2>
+					Additional routes available
+				</h2>
+				<table>
+					<tr>
+						<td>
+							<span class="badge badge-success">/health </span>
+
+							<span class="badge badge-success">/metrics</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="badge badge-success">/user/{Name}</span>
+							<span class="badge badge-success">/v1/check</span>
+							<span class="badge badge-success"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="badge badge-success">/status/403</span>
+							<span class="badge badge-success">/status/404</span>
+							<span class="badge badge-success">/status/405</span>
+							<span class="badge badge-success">/status/500</span>
+							<span class="badge badge-success">/status/501</span>
+							<span class="badge badge-success">/status/502</span>
+							<span class="badge badge-success">/status/503</span>
+							<span class="badge badge-success">/status/504</span>
+							<span class="badge badge-success">/status/505</span>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-		<div class="col-12 col-lg-9 pt-5">
-		  <h1>
-			About
-		  </h1>
-		  <div class="host-info mt-4">
-			<p class="mb-0">
-				<p>
-					This is a sample application created for testing containers.
-				</p>
-		  </div>
-		  <h2>
-			Additional routes available
-		  </h2>
-			  <span class="badge badge-success">/health </span>
-			  <span class="badge badge-success">/user/{Name}</span>
-			  <span class="badge badge-success">/v1/check</span>
-			  <span class="badge badge-success">/metrics</span>
-			  <span class="badge badge-success">/v1/check</span>
-			  <span class="badge badge-success">/status/403</span>
-			  <span class="badge badge-success">/status/404</span>
-			  <span class="badge badge-success">/status/405</span>
-			  <span class="badge badge-success">/status/500</span>
-			  <span class="badge badge-success">/status/501</span>
-			  <span class="badge badge-success">/status/502</span>
-			  <span class="badge badge-success">/status/503</span>
-			  <span class="badge badge-success">/status/504</span>
-			  <span class="badge badge-success">/status/505</span>
-			  <span class="badge badge-success"></span>
-		  </div>
-		</div>
-	  </div>
 	</div>
-  </div>
+</div>
+</div>
 {{end}}
