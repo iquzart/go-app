@@ -1,26 +1,25 @@
 package main
 
 import (
-	"os"
+	"go-app/server"
 	"log"
-	"go-app/routers"
+	"os"
 )
 
 func main() {
-	// Custom port 
+	// Custom port
 	port := ":" + os.Getenv("PORT")
 
 	// Initialize the router
-	routersInit := routers.InitRouter()
+	routersInit := server.InitServer()
 
 	// Run Application
 	if port == ":" {
-		log.Printf("Starting app on default port")
+		log.Printf("Go App started on default port")
 		routersInit.Run()
 	} else {
-		log.Printf("Starting app on port " + os.Getenv("PORT"))
+		log.Printf("Go App started on port " + os.Getenv("PORT"))
 		routersInit.Run(port)
 	}
-
 
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func initializeRoutes(r *gin.Engine) {
+func InitializeRoutes(r *gin.Engine) {
 	// Routes
 	r.GET("/", controllers.Home)
 	r.GET("/about", controllers.About)
