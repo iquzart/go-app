@@ -1,5 +1,5 @@
 # Start from the latest golang base image
-FROM golang:1.15-alpine as  build-env
+FROM golang:1.16-alpine as  build-env
 
 # Set the Current Working Directory inside the container
 WORKDIR /src
