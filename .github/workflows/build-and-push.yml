@@ -1,0 +1,36 @@
+name: Build and Push to Docker Hub
+
+on:
+  push:
+    branches: [master, release/*]
+    tags:
+      - '*'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./Containerfile
+        args: |
+          --file ./Containerfile
+          --push
+          --tag diquzart/go-app:latest
+          --tag diquzart/go-app:${{ github.sha }}
+          --tag diquzart/go-app:${{ github.ref }}
+          --build-arg VERSION=${{ github.sha }}
+      secrets:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
