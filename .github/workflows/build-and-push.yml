@@ -11,6 +11,7 @@ on:
     paths-ignore:
           - 'deployment/**'
           - 'azure-pipeline/**'
+          - '.github/**'
   pull_request:
 
 env:
