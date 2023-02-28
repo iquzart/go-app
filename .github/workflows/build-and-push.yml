@@ -1,13 +1,17 @@
 name: Build and Push to Docker Hub
 
 on:
-  schedule:
-    - cron: '0 10 * * 0'
+  # schedule:
+  #   - cron: '0 10 * * 0'
   push:
     branches:
      - '**'
     tags:
       - 'v*.*.*'
+    paths-ignore:
+          - 'deployment/**'
+          - 'azure-pipeline/**'
+          - '.github/**'
   pull_request:
 
 env:
@@ -30,9 +34,7 @@ jobs:
           type=schedule
           type=ref,event=branch
           type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
+          type=semver,pattern={{raw}}
           type=sha
 
     - name: Set up QEMU
