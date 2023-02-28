@@ -1,10 +1,17 @@
 name: Build and Push to Docker Hub
 
 on:
+  schedule:
+    - cron: '0 10 * * 0'
   push:
-    branches: [master, release/*]
+    branches:
+     - '**'
     tags:
-      - '*'
+      - 'v*.*.*'
+  pull_request:
+
+env:
+  DOCKER_IMAGE: diquzart/go-app
 
 jobs:
   build-and-push:
@@ -13,6 +20,20 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.DOCKER_IMAGE }}
+        tags: |
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
@@ -24,13 +45,11 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./Containerfile
-        args: |
-          --file ./Containerfile
-          --push
-          --tag diquzart/go-app:latest
-          --tag diquzart/go-app:${{ github.sha }}
-          --tag diquzart/go-app:${{ github.ref }}
-          --build-arg VERSION=${{ github.sha }}
-      secrets:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        file: ./Containerfile
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        build-args: |
+          VERSION=${{ github.sha }}
+        secrets: |
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
