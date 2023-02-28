@@ -1,13 +1,16 @@
 name: Build and Push to Docker Hub
 
 on:
-  schedule:
-    - cron: '0 10 * * 0'
+  # schedule:
+  #   - cron: '0 10 * * 0'
   push:
     branches:
      - '**'
     tags:
       - 'v*.*.*'
+    paths-ignore:
+          - 'deployment/**'
+          - 'azure-pipeline/**'
   pull_request:
 
 env:
