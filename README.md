@@ -10,6 +10,7 @@ Features
 --------
 1. Health check for Kubernetes
 2. Prometheus Metrics
+3. HashiCorp Vault integration in Helm chart
 
 Environment Veriables
 ---------------------

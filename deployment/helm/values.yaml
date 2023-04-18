@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+secretFromVault:
+  enabled: true
+ 
 replicaCount: 1
 
 image:
@@ -23,7 +26,23 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations: 
+  cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+
+vaultAgentAnnotations: 
+  vault.hashicorp.com/agent-inject-template-app-config: |
+    {{ with secret "dev/data/go-app" -}}
+      export BANNER="{{ .Data.data.BANNER }}"
+    {{- end }}
+  vault.hashicorp.com/service: 'http://kind-vault.vault.svc:8200'
+  vault.hashicorp.com/auth-path: 'auth/kubernetes/devops_cluster'
+  vault.hashicorp.com/role: 'go-app'
+  vault.hashicorp.com/agent-inject-secret-app-config: 'dev/data/go-app'
+  vault.hashicorp.com/tls-skip-verify: 'true'
+  vault.hashicorp.com/agent-pre-populate-only: 'true'
+  vault.hashicorp.com/agent-inject: 'true'
+  vault.hashicorp.com/agent-run-as-same-user: 'true'
+  vault.hashicorp.com/agent-inject-perms-app-config: '0770'
 
 podSecurityContext: {}
   # fsGroup: 2000
