@@ -13,10 +13,15 @@ spec:
       {{- include "go-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
+        {{- if .Values.secretFromVault.enabled }}
+          {{- with .Values.vaultAgentAnnotations }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- end }}
       labels:
         {{- include "go-app.selectorLabels" . | nindent 8 }}
     spec:
@@ -29,6 +34,11 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- if .Values.secretFromVault.enabled }}
+          command: ["/bin/sh"]
+          args:
+            ['-c', 'source /vault/secrets/app-config && env > /vault/secrets/test && ./app']
+          {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
