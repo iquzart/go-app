@@ -1,5 +1,5 @@
 # Start from the latest golang base image
-FROM golang:1.16-alpine as  build-env
+FROM golang:1.20-alpine as  build-env
 
 # Set the Current Working Directory inside the container
 WORKDIR /src
@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go build -o app .
+RUN go build -o app cmd/app/main.go
 
 # Final stage
 FROM alpine:latest
@@ -25,14 +25,12 @@ RUN apk update && rm -rf /var/cache/apk/*
 # Maintainer Info
 LABEL maintainer="Muhammed Iqbal <iquzart@hotmail.com>"
 
-# Set GIN Mode as Release
-ENV GIN_MODE=release
-
-# Set environment variable default value
-ENV BANNER="Hello from Go App"
-
-# Container PORT
-ENV PORT="8080"
+# Set Environement variables
+ENV \
+    PORT="8080" \
+    SERVICE_NAME="go-app" \
+    BANNER="Hello from Go App" \
+    GIN_MODE="release"
 
 # Create non-root account to run the container
 RUN adduser go -h /app -u 1000 -D
