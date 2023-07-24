@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go build -o app .
+RUN go build -o app cmd/app/main.go
 
 # Final stage
 FROM alpine:latest
