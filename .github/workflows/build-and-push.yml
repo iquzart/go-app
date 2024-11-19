@@ -31,6 +31,7 @@ concurrency:
 env:
   CONTAINER_IMAGE_REPO: "diquzart"
   CONTAINER_IMAGE_NAME: "go-app"
+  CONTAINERFILE: "./Containerfile"
 
 jobs:
   init:
