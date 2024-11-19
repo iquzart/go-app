@@ -99,9 +99,12 @@ jobs:
 
       - name: Trivy Scan Container image
         uses: aquasecurity/trivy-action@master
+        env:
+          TRIVY_SKIP_DB_UPDATE: true
+          # TRIVY_SKIP_JAVA_DB_UPDATE: true
         with:
           image-ref: ${{ steps.image_metadata.outputs.tags }}
-          # exit-code: "1"
+          exit-code: "1"
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "CRITICAL,HIGH"
