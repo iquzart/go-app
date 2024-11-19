@@ -1,5 +1,5 @@
 # Start from the latest golang base image
-FROM golang:1.20-alpine as  build-env
+FROM golang:1.23-alpine as  build-env
 
 # Set the Current Working Directory inside the container
 WORKDIR /src
@@ -27,10 +27,10 @@ LABEL maintainer="Muhammed Iqbal <iquzart@hotmail.com>"
 
 # Set Environement variables
 ENV \
-    PORT="8080" \
-    SERVICE_NAME="go-app" \
-    BANNER="Hello from Go App" \
-    GIN_MODE="release"
+  PORT="8080" \
+  SERVICE_NAME="go-app" \
+  BANNER="Hello from Go App" \
+  GIN_MODE="release"
 
 # Create non-root account to run the container
 RUN adduser go -h /app -u 1000 -D
