@@ -1,60 +1,111 @@
-name: Build and Push to Docker Hub
+name: CI
 
 on:
   # schedule:
   #   - cron: '0 10 * * 0'
   push:
     branches:
-     - '**'
+      - "**"
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
     paths-ignore:
-          - 'deployment/**'
-          - 'azure-pipeline/**'
-          - '.github/**'
-  pull_request:
+      - "deployment/**"
+      - "azure-pipeline/**"
+      - ".github/**"
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Choose the environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - "dev"
+          - "uat"
+          - "prod"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
-  DOCKER_IMAGE: diquzart/go-app
+  CONTAINER_IMAGE_REPO: "diquzart"
+  CONTAINER_IMAGE_NAME: "go-app"
 
 jobs:
-  build-and-push:
+  init:
     runs-on: ubuntu-latest
+    env:
+      PROD_IMAGE_TAG_PREFIX: "prod"
+      UAT_IMAGE_TAG_PREFIX: "uat"
+      DEV_IMAGE_TAG_PREFIX: "dev"
+    outputs:
+      image_tag: ${{ steps.set-image-tag.outputs.IMAGE_TAG }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ env.DOCKER_IMAGE }}
-        tags: |
-          type=schedule
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{raw}}
-          type=sha
+      - name: Set image tag
+        id: set-image-tag
+        run: |
+          if [[ ${{ github.ref_type }} == "tag" ]]; then
+            echo "IMAGE_TAG=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            ENV=${{ github.event.inputs.env }}
+            TAG_PREFIX=$(
+              if [[ $ENV == "prod" ]]; then
+                echo ${{ env.PROD_IMAGE_TAG_PREFIX }}
+              elif [[ $ENV == "uat" ]]; then
+                echo ${{ env.UAT_IMAGE_TAG_PREFIX }}
+              else
+                echo ${{ env.DEV_IMAGE_TAG_PREFIX }}
+              fi
+            )
+            COMMIT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+            echo "IMAGE_TAG=${TAG_PREFIX}-${COMMIT_SHA}" >> $GITHUB_OUTPUT
+          fi
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: init
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Set metadata for the Container Image
+        uses: docker/metadata-action@v4
+        id: image_metadata
+        with:
+          images: ${{ env.CONTAINER_IMAGE_REPO }}/${{ env.CONTAINER_IMAGE_NAME }}
+          tags: |
+            ${{ needs.init.outputs.image_tag }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Containerfile
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ steps.meta.outputs.tags }}
-        build-args: |
-          VERSION=${{ github.sha }}
+      - name: Login to Repository (Docker Hub)
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Container image
+        run: |
+          docker build \
+            --tag ${{ steps.image_metadata.outputs.tags }} \
+            --file $CONTAINERFILE .
+
+      - name: Trivy Scan Container image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_metadata.outputs.tags }}
+          # exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+
+      - name: Push Container Image
+        run: |
+          docker push ${{ steps.image_metadata.outputs.tags }}
+
