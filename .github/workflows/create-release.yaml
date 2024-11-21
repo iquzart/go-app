@@ -33,10 +33,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if tag is valid
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           if [[ ! "${{ github.ref_name }}" =~ ^refs/tags/v.* ]]; then
-            echo "Auto Cancel: The event was triggered by a branch push or an invalid tag."
-            exit 78 
+            echo "Failure: The event was triggered by a branch or an invalid tag."
+            exit 1 
           fi
 
       - name: Checkout code
