@@ -1,4 +1,5 @@
 name: Create Release
+run-name: Create Release Version - ${{ github.ref_name }}
 
 on:
   push:
@@ -28,8 +29,16 @@ permissions:
 
 jobs:
   release:
+    name: Create Release for ${{ github.ref_name || github.event.inputs.tag }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check if tag is valid
+        run: |
+          if [[ ! "${{ github.ref_name }}" =~ ^refs/tags/v.* ]]; then
+            echo "This workflow must only run for a tag and not a branch."
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -62,7 +71,7 @@ jobs:
             "${{ steps.build_changelog.outputs.changelog }}" \
             "${{ env.additional_notes }}")
           gh release create "$tag" \
-            --title "Release $tag" \
+            --title "$tag" \
             --notes "$release_notes" \
             --draft=${{ env.draft }} \
             --prerelease=${{ env.prerelease }}
