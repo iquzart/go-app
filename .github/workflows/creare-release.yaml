@@ -1,0 +1,73 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag for the release (e.g., v1.0.0)"
+        required: true
+        default: "v1.0.0"
+      notes:
+        description: "Additional release notes"
+        required: false
+        default: ""
+      draft:
+        description: "Mark the release as a draft"
+        required: true
+        default: "false"
+      prerelease:
+        description: "Mark the release as a prerelease"
+        required: true
+        default: "false"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine tag and notes
+        id: set_inputs
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+            echo "additional_notes=${{ github.event.inputs.notes }}" >> $GITHUB_ENV
+            echo "draft=${{ github.event.inputs.draft }}" >> $GITHUB_ENV
+            echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_ENV
+          else
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+            echo "additional_notes=" >> $GITHUB_ENV
+            echo "draft=false" >> $GITHUB_ENV
+            echo "prerelease=false" >> $GITHUB_ENV
+          fi
+
+      - name: Build changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@main
+        with:
+          configuration: "release-changelog-builder-config.json"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.tag }}
+          release_name: Release ${{ env.tag }}
+          body: |
+            ${{ steps.build_changelog.outputs.changelog }}
+            ${{ env.additional_notes }}
+          draft: ${{ env.draft }}
+          prerelease: ${{ env.prerelease }}
