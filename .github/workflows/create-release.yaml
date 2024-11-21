@@ -32,6 +32,13 @@ jobs:
     name: Create Release for ${{ github.ref_name || github.event.inputs.tag }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check if tag is valid
+        run: |
+          if [[ ! "${{ github.ref_name }}" =~ ^refs/tags/v.* ]]; then
+            echo "This workflow must only run for a tag and not a branch."
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
