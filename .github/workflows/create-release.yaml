@@ -28,6 +28,7 @@ permissions:
 
 jobs:
   release:
+    name: Create Release for ${{ github.ref_name || github.event.inputs.tag }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -62,7 +63,7 @@ jobs:
             "${{ steps.build_changelog.outputs.changelog }}" \
             "${{ env.additional_notes }}")
           gh release create "$tag" \
-            --title "Release $tag" \
+            --title "$tag" \
             --notes "$release_notes" \
             --draft=${{ env.draft }} \
             --prerelease=${{ env.prerelease }}
