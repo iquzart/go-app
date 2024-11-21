@@ -1,6 +1,6 @@
 module go-app
 
-go 1.20
+go 1.23.3
 
 require (
 	github.com/gin-contrib/multitemplate v0.0.0-20210428235909-8a2f6dd269a0
