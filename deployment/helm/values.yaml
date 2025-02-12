@@ -4,7 +4,7 @@
 
 secretFromVault:
   enabled: false
- 
+
 replicaCount: 1
 
 image:
@@ -26,32 +26,33 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: 
+podAnnotations:
   cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
 
-vaultAgentAnnotations: 
+vaultAgentAnnotations:
   vault.hashicorp.com/agent-inject-template-app-config: |
     {{ with secret "dev/data/go-app" -}}
       export BANNER="{{ .Data.data.BANNER }}"
     {{- end }}
-  vault.hashicorp.com/service: 'http://kind-vault.vault.svc:8200'
-  vault.hashicorp.com/auth-path: 'auth/kubernetes/devops_cluster'
-  vault.hashicorp.com/role: 'go-app'
-  vault.hashicorp.com/agent-inject-secret-app-config: 'dev/data/go-app'
-  vault.hashicorp.com/tls-skip-verify: 'true'
-  vault.hashicorp.com/agent-pre-populate-only: 'true'
-  vault.hashicorp.com/agent-inject: 'true'
-  vault.hashicorp.com/agent-run-as-same-user: 'true'
-  vault.hashicorp.com/agent-inject-perms-app-config: '0770'
+  vault.hashicorp.com/service: "http://kind-vault.vault.svc:8200"
+  vault.hashicorp.com/auth-path: "auth/kubernetes/devops_cluster"
+  vault.hashicorp.com/role: "go-app"
+  vault.hashicorp.com/agent-inject-secret-app-config: "dev/data/go-app"
+  vault.hashicorp.com/tls-skip-verify: "true"
+  vault.hashicorp.com/agent-pre-populate-only: "true"
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/agent-run-as-same-user: "true"
+  vault.hashicorp.com/agent-inject-perms-app-config: "0770"
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
 securityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -63,7 +64,8 @@ service:
 ingress:
   enabled: true
   className: "nginx"
-  annotations: {}
+  annotations:
+    {}
     # ingress.kubernetes.io/ssl-redirect: "true"
     # kubernetes.io/ingress.allow-http: "false"
     # kubernetes.io/tls-acme: "true"
@@ -78,7 +80,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: 
+resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -101,4 +103,15 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - go-app
+          topologyKey: "kubernetes.io/hostname"
